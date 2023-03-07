@@ -1,15 +1,17 @@
-#
-# Build stage
-#
-FROM maven:4.0.0-jdk-17 AS build
-COPY . .
-RUN mvn clean package -DskipTests
+# TODO: Replace <PROJECT_NAME> below with your project’s name
+#       (See Project Explorer in Eclipse)
 
-#
+
+## Based on https://community.render.com/t/3232
+
+# Build stage
+FROM maven:3.8.6-eclipse-temurin-17-focal AS build
+COPY src /home/app/src
+COPY pom.xml /home/app
+RUN mvn -f /home/app/pom.xml clean package
+
 # Package stage
-#
-FROM openjdk:17-jdk-slim
-COPY --from=build /target/CarDatabaseWeek6-SNAPSHOT.jar demo.jar
-# ENV PORT=8080
+FROM eclipse-temurin:17-jre-focal
+COPY --from=build /home/app/target/CarDatabaseWeek6-0.0.1-SNAPSHOT.jar /usr/local/lib/pkg.jar
 EXPOSE 8080
-ENTRYPOINT ["java","-jar","demo.jar"]
+ENTRYPOINT ["java", "-jar", "/usr/local/lib/pkg.jar"]
