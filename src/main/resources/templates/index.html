@@ -1,0 +1,22 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Main</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+	
+	<i>Tervehdys <b sec:authentication="name"></b>, 
+        roolisi on <b sec:authentication="principal.authorities"></b>
+	
+		<h3>Pääsivu</h3></i>
+		<a href="/carlist">Mene autolistaukseen</a><br>
+		<a sec:authorize="hasAuthority('ADMIN')" href="/owner/ownerlist">Mene omistajalistaukseen</a><br><br><br>   
+		<a sec:authorize="hasAuthority('ADMIN')" href="/admin/register">Registeröi uusi käyttäjä</a><br><br><br>   
+		
+		
+     <a href="/logout"><i>Kirjaudu ulos</i></a>
+		
+	</div>
+</body>
+</html>
